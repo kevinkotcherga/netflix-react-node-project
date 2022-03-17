@@ -1,11 +1,28 @@
 import { Add, PlayArrow, ThumbDownAltOutlined, ThumbUpAltOutlined } from '@material-ui/icons'
-import { useState } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import './listitem.scss'
 
-const ListItem = ({index}) => {
+const ListItem = ({index, item}) => {
 
   const [isHovered, setIsHovered] = useState(false);
-  const trailer = "https://player.vimeo.com/external/371433846.sd.mp4?s=236da2f3c0fd273d2c6d9a064f3ae35579b2bbdf&profile_id=139&oauth2_token_id=57447761";
+  const [movie, setMovie] = useState({});
+
+  useEffect(() => {
+    const getMovie = async () => {
+      try {
+        const res = await axios.get('/movies/find/' + item, {
+          headers: {
+            token: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMzMwN2E4OTgxN2E3MjE1ZDllZGUzYSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY0NzUyNzI2OCwiZXhwIjoxNjQ3OTU5MjY4fQ.8Va7qOViuD60yM2zHWPsOewQvkseaY01CYiWiBv7kWo'
+          },
+        });
+        setMovie(res.data)
+      }catch(err){
+        console.log(err)
+      }
+    };
+    getMovie()
+  }, [item]);
 
   return (
     <div
@@ -15,12 +32,12 @@ const ListItem = ({index}) => {
         onMouseLeave={() => setIsHovered(false)}
       >
       <img
-        src="https://leclaireur.fnac.com/wp-content/uploads/2021/12/avatar.jpg"
+        src={movie.img}
         alt=""
       />
       {isHovered && (
       <>
-        <video src={trailer} autoPlay={true} loop />
+        <video src={movie.trailer} autoPlay={true} loop />
         <div className="item-info">
           <div className="icons">
             <PlayArrow className="icon" />
@@ -29,14 +46,14 @@ const ListItem = ({index}) => {
             <ThumbDownAltOutlined className="icon" />
           </div>
           <div className="itemInfoTop">
-            <span>1 heure 14 mins</span>
-            <span className='limit'>+16</span>
-            <span>2009</span>
+            <span>{movie.duration}</span>
+            <span className='limit'>{movie.limit}</span>
+            <span>{movie.year}</span>
           </div>
           <div className="desc">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis deserunt iusto repellendus, distinctio amet atque officia reiciendis doloribus unde molestiae fugiat architecto inventore possimus eligendi natus saepe minima quia aliquid.
+            {movie.desc}
           </div>
-          <div className="genre">Action</div>
+          <div className="genre">{movie.genre}</div>
         </div>
       </>
       )}
