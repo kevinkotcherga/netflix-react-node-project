@@ -9,18 +9,32 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import { useContext } from 'react';
+
 
 const App = () => {
+
+  const user = true;
 
   return (
     <Router>
       <Switch>
         <Route exact path="/">
-          <Home />
+          { user ? <Home /> : <Redirect to='register' /> }
+        </Route>
+        <Route path="/register">
+          <Register />
+        </Route>
+        <Route path="/login">
+          <Login />
         </Route>
         <Route path="/movies">
-          <Home />
+          <Home type="movies" />
+        </Route>
+        <Route path="/series">
+          <Home type="series" />
+        </Route>
+        <Route path="/watch">
+          <Watch />
         </Route>
       </Switch>
     </Router>
