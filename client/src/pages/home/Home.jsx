@@ -15,7 +15,7 @@ const Home = ({ type }) => {
       try {
         const res = await axios.get('/lists', {
           headers: {
-            token: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMzMwN2E4OTgxN2E3MjE1ZDllZGUzYSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY0NzUyNzI2OCwiZXhwIjoxNjQ3OTU5MjY4fQ.8Va7qOViuD60yM2zHWPsOewQvkseaY01CYiWiBv7kWo'
+            token: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMzMwN2E4OTgxN2E3MjE1ZDllZGUzYSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY0Nzg1OTA2NiwiZXhwIjoxNjQ4MjkxMDY2fQ.UNsz7alHLNbf1l93Z9WXheopqqVY20vdcA2AIHvkzU0'
           }
         });
         setLists(res.data)
@@ -31,7 +31,7 @@ const Home = ({ type }) => {
   return (
     <div className='home'>
       <Navbar />
-      <Featured type={ type }/>
+      <Featured type={ type } setGenre={ setGenre }/>
       {lists.map((list) => (
         <List list={ list }/>
       ))}

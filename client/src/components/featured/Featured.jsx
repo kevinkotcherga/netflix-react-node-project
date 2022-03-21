@@ -1,13 +1,33 @@
 import { InfoOutlined, PlayArrow } from '@material-ui/icons'
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import './featured.scss'
 
-const Featured = ({ type }) => {
+const Featured = ({ type, setGenre }) => {
+  const [content, setContent] = useState({});
+
+  useEffect(() => {
+    const getRandomContent = async () => {
+      try {
+        const res = await axios.get(`/movies/random?type=${ type }`, {
+          headers: {
+            token: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMzMwN2E4OTgxN2E3MjE1ZDllZGUzYSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY0Nzg1OTA2NiwiZXhwIjoxNjQ4MjkxMDY2fQ.UNsz7alHLNbf1l93Z9WXheopqqVY20vdcA2AIHvkzU0'
+          },
+        });
+        setContent(res.data[0])
+      } catch(err){
+        console.log(err)
+      }
+    };
+    getRandomContent()
+  }, [type])
+
   return (
     <div className='featured'>
       {type && (
         <div className="category">
           <span>{type === "movies" ? "Movies" : "Series"}</span>
-          <select name="genre" id="genre">
+          <select name="genre" id="genre" onChange={e => setGenre(e.target.value) }>
             <option>Genre</option>
             <option value="adventure">Adventure</option>
             <option value="comedy">Comedy</option>
@@ -27,16 +47,16 @@ const Featured = ({ type }) => {
       )}
 
       <img
-        src="https://wallpaperaccess.com/full/861767.jpg"
+        src={content.img}
         alt=""
       />
       <div className="info">
         <img
-          src="https://www.pngmart.com/files/15/Avatar-Logo-PNG-Clipart.png"
+          src={content.imgTitle}
           alt=""
         />
         <span className='desc'>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis iste cupiditate molestiae doloremque ullam perspiciatis iure distinctio minus. Vel quas doloribus amet consectetur nobis nihil est quisquam voluptas cumque illum?
+          {content.desc}
         </span>
         <div className="buttons">
           <button className="play">
