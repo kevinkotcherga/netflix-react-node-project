@@ -1,4 +1,4 @@
-import { ArrowBackOutlined, Movie } from "@material-ui/icons";
+import { ArrowBackOutlined } from "@material-ui/icons";
 import { useLocation } from "react-router-dom";
 import "./watch.scss";
 import { Link } from 'react-router-dom';
